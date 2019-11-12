@@ -1,13 +1,28 @@
 <?php 
+    session_start();
+
 	require_once("../configuration.php"); 
     require_once("../bdd_connexion.php"); 
+    
+    if(empty($_SESSION)){
+        header('Location: connexion.php');
+    }
+    
+    $messages = mysqli_query($bdd, 'SELECT * FROM contact ORDER BY id DESC;');
+    
+    if(!empty($_POST)){
+        $vu = $_POST['vu'];
+        $id = $_POST['id'];
 
-    $messages = mysqli_query($bdd, 'SELECT * FROM contact;');
+        mysqli_query($bdd, 'UPDATE contact SET vu='.$vu.' WHERE id='.$id.';');
+        header('Location: messages.php');
+    }
 ?>
 
 <html>
 <head>
     <title><?php echo $NomSite; ?> - Messages</title>
+    <link rel="icon" href="<?= $favicon ?>" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -26,12 +41,14 @@
         <a href="index.php"><button type="button" class="btn btn-info">Retour</button></a>
 
         <div class="container">
+            <h1 style="text-align: center;">Messages</h1>
             <table class="table" style="border: 2px solid black">
                 <thead class="thead-light">
                     <tr>
                         <th>Prénom</th>
                         <th>Mail</th>
                         <th>Messages</th>
+                        <th>Lu</th>
                     </tr>
                 </thead>
 
@@ -41,6 +58,18 @@
                             echo '<td>'.$donnees['prenom'].'</td>';
                             echo '<td>'.$donnees['mail'].'</td>';
                             echo '<td>'.$donnees['message'].'</td>';
+                        ?>
+                        <form action="" method="POST">
+                            <input type="hidden" value="<?php echo $donnees['id']; ?>" name="id">
+                            <?php
+                                if($donnees['vu'] == 1){
+                                    echo '<td><div><button type="submit" class="btn btn-success" value="0" name="vu">Lu</button></div></td>';
+                                }else{
+                                    echo '<td><div><button type="submit" class="btn btn-warning" value="1" name="vu">Non lu</button></div></td>';
+                                }
+                            ?>
+                        </form>
+                        <?php
                         echo '</tr>';
                     } ?>
                 </tbody>
@@ -51,11 +80,10 @@
     </div>
 
     <br>
-      
-    <?php 
-      // FOOTER //
-      require_once("../footer.php");
-    ?>
+    
+    <!-- FOOTER -->
+    <?php require_once("footer-admin.php"); ?>
+    <!-- FOOTER -->
 
 </body>
 

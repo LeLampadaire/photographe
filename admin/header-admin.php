@@ -9,5 +9,6 @@
     <a href="javascript:void()" onclick="w3_close()" class=" w3-button w3-right w3-padding-8">x</a> 
     <a href="../index.php" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">Accueil</a> 
     <a href="../information.php#informations" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">Informations</a> 
+    <a href="../information.php#services" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">Services</a> 
     <a href="../information.php#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-center w3-padding-16">Contact</a>
 </nav>

@@ -12,7 +12,7 @@
     if(isset($_POST['id'])){
         if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0 ){
             $extension_upload = strtolower( substr( strrchr($_FILES['photo']['name'], '.') ,1) );
-            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg"){
+            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg" || $extension_upload == "gif"){
                 $nomphoto = "images/categorie/".$_POST['nom'].".{$extension_upload}";
                 $uploadlien = "../images/categorie/".$_POST['nom'].".{$extension_upload}";
                 $move = move_uploaded_file($_FILES['photo']['tmp_name'],$uploadlien);
@@ -32,9 +32,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?php echo $NomSite; ?> - Modification</title>
+    <link rel="icon" href="<?= $favicon ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -59,39 +58,39 @@
                 <?php foreach($categories as $donnees){?>
                     <div class="col-sm-4" style="padding-bottom: 20px;">
                         <div class="card" style="width: 18rem;">
-                            <img src="<?php echo '../'.$donnees['image']; ?>" class="card-img-top" alt="<?php echo utf8_encode($donnees['nom']); ?>">
+                            <img src="<?php echo '../'.$donnees['image']; ?>" class="card-img-top" alt="<?php echo $donnees['nom']; ?>">
                             <div class="card-body">
-                                <h3 class="card-title"><?php echo utf8_encode($donnees['nom']); ?></h3>
-                                <p class="card-text"><?php echo utf8_encode($donnees['description']); ?></p>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal<?php echo utf8_encode($donnees['id']); ?>">Modifiez !</button>
+                                <h3 class="card-title"><?php echo $donnees['nom']; ?></h3>
+                                <p class="card-text"><?php echo $donnees['description']; ?></p>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#Modal<?php echo $donnees['id']; ?>">Modifiez !</button>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Modal -->
-                    <div class="modal fade" id="Modal<?php echo utf8_encode($donnees['id']); ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo utf8_encode($donnees['nom']); ?>L" aria-hidden="true">
+                    <div class="modal fade" id="Modal<?php echo $donnees['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $donnees['nom']; ?>L" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="<?php echo utf8_encode($donnees['nom']); ?>L">Modifcation</h5>
+                                    <h5 class="modal-title" id="<?php echo $donnees['nom']; ?>L">Modifcation</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
-                                    <input type="hidden" name="id" value="<?php echo utf8_encode($donnees['id']); ?>">
+                                    <input type="hidden" name="id" value="<?php echo $donnees['id']; ?>">
                                     <div class="modal-body">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-nom-<?php echo utf8_encode($donnees['nom']); ?>">Nom</span>
+                                                <span class="input-group-text" id="basic-nom-<?php echo $donnees['nom']; ?>">Nom</span>
                                             </div>
-                                            <input type="text" class="form-control" name="nom" value="<?php echo utf8_encode($donnees['nom']); ?>" aria-label="Nom-<?php echo utf8_encode($donnees['nom']); ?>" aria-describedby="basic-nom-<?php echo utf8_encode($donnees['nom']); ?>">
+                                            <input type="text" class="form-control" name="nom" value="<?php echo $donnees['nom']; ?>" aria-label="Nom-<?php echo $donnees['nom']; ?>" aria-describedby="basic-nom-<?php echo $donnees['nom']; ?>">
                                         </div>
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-description-<?php echo utf8_encode($donnees['nom']); ?>">Description</span>
+                                                <span class="input-group-text" id="basic-description-<?php echo $donnees['nom']; ?>">Description</span>
                                             </div>
-                                            <input type="text" class="form-control" name="description" value="<?php echo utf8_encode($donnees['description']); ?>" aria-label="Description-<?php echo utf8_encode($donnees['nom']); ?>" aria-describedby="basic-description-<?php echo utf8_encode($donnees['nom']); ?>">
+                                            <input type="text" class="form-control" name="description" value="<?php echo $donnees['description']; ?>" aria-label="Description-<?php echo $donnees['nom']; ?>" aria-describedby="basic-description-<?php echo $donnees['nom']; ?>">
                                         </div>
                                         <input id="photo" name="photo" type="file"><br><br>
                                     </div>
@@ -113,7 +112,7 @@
     </div>
 
     <!-- FOOTER -->
-    <?php include('../footer.php'); ?>
+    <?php require_once("footer-admin.php"); ?>
     <!-- FOOTER -->
 </body>
 

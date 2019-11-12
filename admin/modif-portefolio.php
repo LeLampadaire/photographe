@@ -15,7 +15,11 @@
     }
 
     if(isset($_POST['id-image'])){
+        $delete = mysqli_query($bdd, 'SELECT lien FROM portefolio WHERE id='.$_POST['id-image'].';');
+        $delete = mysqli_fetch_array($delete, MYSQLI_ASSOC);
+        $delete = "../".$delete['lien'];
         mysqli_query($bdd, 'DELETE FROM portefolio WHERE id='.$_POST['id-image'].';');
+        unlink($delete);
         header('Location: modif-portefolio.php?categorie='.$_POST['id-categorie'].'');
     }
 
@@ -24,9 +28,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?php echo $NomSite; ?> - Suppression</title>
+    <link rel="icon" href="<?= $favicon ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -50,7 +53,7 @@
             <?php if($test != NULL){
                 foreach($photo as $donnees){ ?>
                     <div class="col-sm-2 text-center rounded" style="border: solid 2px black; margin: 2px;">
-                        <img src=../<?php echo $donnees['lien']; ?> width="200px" style="padding: 15px; margin-left: -20px;">
+                        <img src="../<?php echo $donnees['lien']; ?>" width="200px" style="padding: 15px; margin-left: -20px;">
                         <form action="" method="POST">
                             <input type="hidden" value="<?php echo $donnees['id']; ?>" name="id-image">
                             <input type="hidden" value="<?php echo $_GET['categorie']; ?>" name="id-categorie">
@@ -70,7 +73,7 @@
     </div>
 
     <!-- FOOTER -->
-    <?php include('../footer.php'); ?>
+    <?php require_once("footer-admin.php"); ?>
     <!-- FOOTER -->
 </body>
 

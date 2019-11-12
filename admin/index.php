@@ -7,9 +7,11 @@
         header('Location: connexion.php');
     }
 
-    $nbr = mysqli_query($bdd, 'SELECT COUNT(id) as nbr FROM contact;');
-    $nbr = mysqli_fetch_array($nbr, MYSQLI_ASSOC);
+    $nbr_messages = mysqli_query($bdd, 'SELECT COUNT(id) as nbr FROM contact WHERE vu = 0;');
+    $nbr_messages = mysqli_fetch_array($nbr_messages, MYSQLI_ASSOC);
     
+    $nbr_services = mysqli_query($bdd, 'SELECT COUNT(vu) as nbr FROM services WHERE vu = 0;');
+    $nbr_services = mysqli_fetch_array($nbr_services, MYSQLI_ASSOC);
 
     $error = 0;
     $errorportefolio = 0;
@@ -18,7 +20,7 @@
     if(isset($_POST['nom']) && isset($_POST['description'])){
         if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0 ){
             $extension_upload = strtolower( substr( strrchr($_FILES['photo']['name'], '.') ,1) );
-            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg"){
+            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg" || $extension_upload == "gif"){
                 $nomphoto = "images/categorie/".$_POST['nom'].".{$extension_upload}";
                 $uploadlien = "../images/categorie/".$_POST['nom'].".{$extension_upload}";
                 $move = move_uploaded_file($_FILES['photo']['tmp_name'],$uploadlien);
@@ -45,9 +47,11 @@
     if(isset($_POST['categorie'])){
         if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0 ){
             $extension_upload = strtolower( substr( strrchr($_FILES['photo']['name'], '.') ,1) );
-            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg"){
-                $nomphoto = "images/portefolio/".utf8_decode($_FILES['photo']['name']);
-                $uploadlien = "../images/portefolio/".utf8_decode($_FILES['photo']['name']);
+            if($extension_upload == "jpg" || $extension_upload == "png" || $extension_upload == "jpeg" || $extension_upload == "gif"){
+                $cat = mysqli_query($bdd, "SELECT nom FROM categories WHERE id=".$_POST['categorie'].";");
+                $cat = mysqli_fetch_array($cat, MYSQLI_ASSOC);
+                $nomphoto = "images/portefolio/".$cat['nom']."-".$_FILES['photo']['name'];
+                $uploadlien = "../images/portefolio/".$cat['nom']."-".$_FILES['photo']['name'];
                 $move = move_uploaded_file($_FILES['photo']['tmp_name'],$uploadlien);
                 mysqli_query($bdd, 'INSERT INTO portefolio (id, categorie, lien) VALUES (NULL, '.$_POST['categorie'].', "'.$nomphoto.'");');
                 header('Location: index.php');
@@ -66,6 +70,7 @@
 <html>
 <head>
     <title><?php echo $NomSite; ?> - Admin</title>
+    <link rel="icon" href="<?= $favicon ?>" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -126,7 +131,7 @@
                         <select class="custom-select" id="inputGroupSelect01" name="categorie">
                             <option value="0" selected disabled>Choisir ...</option>
                             <?php foreach($req as $donnees){
-                                echo '<option value="'.$donnees['id'].'">'.utf8_encode($donnees['nom']).'</option>';
+                                echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
                             } ?>
                         </select>
                     </div>
@@ -154,7 +159,7 @@
                         <select class="custom-select" id="inputGroupSelect01" name="suppression-categorie">
                             <option value="0" selected disabled>Choisir ...</option>
                             <?php foreach($req as $donnees){
-                                echo '<option value="'.$donnees['id'].'">'.utf8_encode($donnees['nom']).'</option>';
+                                echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
                             } ?>
                         </select>
                     </div>
@@ -198,7 +203,7 @@
                         <select class="custom-select" id="inputGroupSelect01" name="suppressionInCategorie">
                             <option value="0" selected disabled>Choisir ...</option>
                             <?php foreach($req as $donnees){
-                                echo '<option value="'.$donnees['id'].'">'.utf8_encode($donnees['nom']).'</option>';
+                                echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
                             } ?>
                         </select>
                     </div>
@@ -218,16 +223,16 @@
 
     <br>
     <div style="text-align: center;">
-        <a href="messages.php" alt="Messages"><button type="button" class="btn btn-primary">Messages <span class="badge badge-light"><?php echo $nbr['nbr'] ?></span></button></a>
+        <a href="services.php" alt="Services"><button type="button" class="btn btn-secondary">Services <span class="badge <?php if($nbr_services['nbr'] == 0){ echo "badge-light"; }else{ echo "badge-danger"; } ?>"><?php echo $nbr_services['nbr'] ?></span></button></a>
+        <a href="messages.php" alt="Messages"><button type="button" class="btn btn-primary">Messages <span class="badge <?php if($nbr_messages['nbr'] == 0){ echo "badge-light"; }else{ echo "badge-danger"; } ?>"><?php echo $nbr_messages['nbr'] ?></span></button></a>
         <a href="deconnexion.php" alt="Déconnexion"><button type="button" class="btn btn-warning">Déconnexion</button></a>
     </div>
     
     <br>
     
-    <?php 
-      // FOOTER //
-      require_once("../footer.php");
-    ?>
+    <!-- FOOTER -->
+    <?php require_once("footer-admin.php"); ?>
+    <!-- FOOTER -->
 
 </body>
 

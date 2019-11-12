@@ -28,11 +28,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="icons/favicon.ico" />
     <title><?php echo $NomSite; ?> - Connexion</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="<?= $favicon ?>" />
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
@@ -66,7 +63,7 @@
 		</section>
 
     <!-- FOOTER -->
-    <?php include('../footer.php'); ?>
+    <?php require_once("footer-admin.php"); ?>
     <!-- FOOTER -->
 </body>
 
