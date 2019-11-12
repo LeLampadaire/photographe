@@ -7,9 +7,14 @@ Site Web pour le photographe Stéphane !
 
 ## Informations
 - Description du photographe
+- Donnée du photographe (Avec captcha)
 
-## Contact
-- Formulaire de contact
+### Services
+- Choix du services
+  - Formulaire (Avec captcha)
+
+### Contact
+- Formulaire de contact (Avec captcha)
 
 ## Admin
 - Catégories
@@ -19,8 +24,10 @@ Site Web pour le photographe Stéphane !
 - Photo
   - Ajout
   - Suppression
+- Services
+  - Listes des services demandés (Services, Nom, Prénom, Mail, Téléphone, Lu/Non Lu)
 - Messages
-  - Listes des messages (Prénom, Mail, Message)
+  - Listes des messages (Prénom, Mail, Message, Lu/Non Lu)
 
 => Se connecter au compte admin :
 - Nom de compte : admin
@@ -30,4 +37,4 @@ Site Web pour le photographe Stéphane !
 - Index
 ![Photo - Index](https://user-images.githubusercontent.com/41271314/67465742-0b587180-f646-11e9-8bf8-4a8b0357f830.PNG)
 - Admin
-![Photo - ADMIN](https://user-images.githubusercontent.com/41271314/67465743-0bf10800-f646-11e9-9236-a2c1dd44fdba.PNG)
+![Panel - Admin](https://user-images.githubusercontent.com/41271314/68693748-1bde7680-0578-11ea-83de-73c53f4e0faa.PNG)
