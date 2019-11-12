@@ -9,18 +9,25 @@
 
     $services = mysqli_query($bdd, 'SELECT * FROM services ORDER BY id DESC;');
     
-    if(!empty($_POST)){
+    if(isset($_POST['vu'])){
         $vu = $_POST['vu'];
         $id = $_POST['id'];
 
         mysqli_query($bdd, 'UPDATE services SET vu='.$vu.' WHERE id='.$id.';');
         header('Location: services.php');
     }
+    
+    if(isset($_POST['supp'])){
+        $id = $_POST['id'];
+
+        mysqli_query($bdd, 'DELETE FROM services WHERE services.id='.$id.';');
+        header('Location: services.php');
+    }
 ?>
 
 <html>
 <head>
-    <title><?php echo $NomSite; ?> - Admin</title>
+    <title><?php echo $NomSite; ?> - Services</title>
     <link rel="icon" href="<?= $favicon ?>" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -53,6 +60,7 @@
                         <th>Mail</th>
                         <th>Téléphone</th>
                         <th>Lu</th>
+                        <th></th>
                     </tr>
                 </thead>
 
@@ -73,6 +81,8 @@
                                 }else{
                                     echo '<td><div><button type="submit" class="btn btn-warning" value="1" name="vu">Non lu</button></div></td>';
                                 }
+                                
+                                echo'<td><button type="submit" name="supp" class="btn btn-danger">X</button></td>';
                             ?>
                         </form>
                         <?php
