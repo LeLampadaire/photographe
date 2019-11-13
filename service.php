@@ -22,9 +22,9 @@
         
         if($decode['success'] == true){
             if(strcmp($_POST['telephone'], "") == 0){
-                mysqli_query($bdd, 'INSERT INTO services (id, services, nom, prenom, mail, telephone, vu) VALUES (NULL, "'.utf8_decode($_POST['services']).'", "'.utf8_decode($_POST['nom']).'", "'.utf8_decode($_POST['prenom']).'", "'.$_POST['mail'].'", NULL, 0);');
+                mysqli_query($bdd, 'INSERT INTO services (id, services, nom, prenom, mail, telephone, vu) VALUES (NULL, "'.$_POST['services'].'", "'.htmlspecialchars($_POST['nom']).'", "'.htmlspecialchars($_POST['prenom']).'", "'.htmlspecialchars($_POST['mail']).'", NULL, 0);');
             }else{
-                mysqli_query($bdd, 'INSERT INTO services (id, services, nom, prenom, mail, telephone, vu) VALUES (NULL, "'.utf8_decode($_POST['services']).'", "'.utf8_decode($_POST['nom']).'", "'.utf8_decode($_POST['prenom']).'", "'.$_POST['mail'].'", "'.$_POST['telephone'].'", 0);');
+                mysqli_query($bdd, 'INSERT INTO services (id, services, nom, prenom, mail, telephone, vu) VALUES (NULL, "'.$_POST['services'].'", "'.htmlspecialchars($_POST['nom']).'", "'.htmlspecialchars($_POST['prenom']).'", "'.htmlspecialchars($_POST['mail']).'", "'.htmlspecialchars($_POST['telephone']).'", 0);');
             }
             header('Location: valid.php');
         }else{
@@ -40,20 +40,13 @@
     <title><?php echo $NomSite; ?> - Services</title>
     <link rel="icon" href="<?= $favicon ?>" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <?php require_once("link.php"); ?>
 </head>
-<body class="text-center">
+<body>
 
-    <?php 
-        // HEADER //
-        require_once("header.php"); 
-    ?>
+    <!-- HEADER -->
+    <?php require_once("header.php"); ?>
+    <!-- HEADER -->
 
     <div class="container">
     
@@ -61,7 +54,9 @@
           echo '<br><div class="alert alert-danger" role="alert">Veuillez cocher la case du captcha !</div>';
         } ?>
 
-        <form action="" method="POST">
+        <br><a href="javascript:history.back()"><button type="button" class="btn btn-info">Retour</button></a>
+
+        <form action="" method="POST" class="text-center">
             <h1><?= $_POST['value'] ?></h1>
             <input type="hidden" value="<?= $_POST['value'] ?>" name="services">
 
@@ -93,7 +88,7 @@
                 <input type="tel" class="form-control" placeholder="Téléphone" aria-label="Téléphone" aria-describedby="basic-addon1" name="telephone">
             </div>
 
-            <div style="margin: 0 auto; width: 300px;">
+            <div class="divCaptcha">
                 <div class="g-recaptcha" data-sitekey="6LfMlcEUAAAAAFZktznFZmdCXgrZntEnsvZYL7Zi"></div>
             </div>
 
@@ -106,40 +101,11 @@
         </form>
     </div>
 
-    <?php 
-        // FOOTER //
-        require_once("footer.php"); 
-    ?>
+    <!-- FOOTER -->
+    <?php require_once("footer.php"); ?>
+    <!-- FOOTER -->
+
+    <?php require_once("script.php"); ?>
 
 </body>
-
-<script>
-    function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
-    }
-        
-    function onClick(element) {
-    document.getElementById("img01").src = element.src;
-    document.getElementById("modal01").style.display = "block";
-    }
-
-    $(function() {
-        var selectedClass = "";
-        $(".fil-cat").click(function(){ 
-            selectedClass = $(this).attr("data-rel"); 
-            $("#portfolio").fadeTo(100, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut().removeClass('scale-anm');
-            setTimeout(function() {
-            $("."+selectedClass).fadeIn().addClass('scale-anm');
-            $("#portfolio").fadeTo(300, 1);
-            }, 300); 
-        });
-    });
-</script>
 </html>

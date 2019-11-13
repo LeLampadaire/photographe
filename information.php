@@ -41,7 +41,7 @@
     $decode = json_decode(file_get_contents($api_url), true);
     
     if($decode['success'] == true){
-      $contact = mysqli_query($bdd, 'INSERT INTO contact(id, prenom, mail, message) VALUES (NULL, "'.$_POST['prenom'].'", "'.$_POST['mail'].'", "'.$_POST['message'].'"); ');
+      $contact = mysqli_query($bdd, 'INSERT INTO contact(id, prenom, mail, message) VALUES (NULL, "'.htmlspecialchars($_POST['prenom']).'", "'.htmlspecialchars($_POST['mail']).'", "'.htmlspecialchars($_POST['message']).'"); ');
       if($contact){
         $alert_contact = 1;
       }else{
@@ -71,27 +71,20 @@
   <title><?php echo $NomSite; ?> - Accueil</title>
   <link rel="icon" href="<?= $favicon ?>" />
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" href="styles.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <?php require_once("link.php"); ?>
 </head>
 <body onselectstart="return false" oncontextmenu="return false" ondragstart="return false" onMouseOver="window.status='..message perso .. '; return true;">
 
-  <?php 
-    // HEADER //
-    require_once("header.php"); 
-  ?>
+    <!-- HEADER -->
+    <?php require_once("header.php"); ?>
+    <!-- HEADER -->
 
-  <!-- About section -->
-  <div class="w3-container w3-dark-grey w3-center w3-text-light-grey w3-padding-32" id="informations">
+  <!-- Informations section -->
+  <div class="w3-container w3-dark-grey w3-center w3-text-light-grey w3-padding-32">
     <h2><b>À propos de moi</b></h2>
-    <img src="images/Profil.png" alt="Me" class="w3-image w3-padding-32" width="200" height="200">
+    <img src="images/Profil.png" alt="Profil" class="w3-image w3-padding-32" width="200" height="200">
 
-    <div class="w3-content w3-justify" style="max-width:600px">
+    <div class="w3-content w3-justify tailleMaxDiv">
 
       <h2>Informations</h2>
       <hr class="w3-opacity">
@@ -107,7 +100,7 @@
       <?php if($alert_valid != 1){ ?>
         <form action="" method="POST">
           <input type="hidden" value="1" name="valid"> 
-          <div style="margin: 0 auto; width: 300px; ">
+          <div class="divCaptcha">
             <div class="g-recaptcha" data-sitekey="6LfMlcEUAAAAAFZktznFZmdCXgrZntEnsvZYL7Zi"></div>
           </div>
 
@@ -142,6 +135,7 @@
               <h3 class="card-title">Restauration de photographie ancienne</h3>
               <p class="card-text">Vous voulez faire revivre vos anciennes photos ou les photos que vous avez tant aimées ? Une restauration complète s'impose ! (avec ou sans tirage)</p>
               <button class="btn btn-primary" value="Restauration de photographie ancienne" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=6" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -151,6 +145,7 @@
               <h3 class="card-title">Photographie de produits en studio</h3>
               <p class="card-text">Vous voulez embellir vos produits ou vos créations ? C'est ici !</p>
               <button class="btn btn-primary" value="Photographie de produits en studio" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=2" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -159,7 +154,8 @@
             <div class="card-body">
               <h3 class="card-title">Événementiel</h3>
               <p class="card-text">Vous cherchez un photographe pour couvrir vos événements ? </p>
-              <button class="btn btn-primary" value="Evènementielles" name="value">Contactez !</button>
+              <button class="btn btn-primary" value="Évènementiel" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=5" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -169,6 +165,7 @@
               <h3 class="card-title">Publicité</h3>
               <p class="card-text">Vous voulez faire une publicité de votre marque ? Alors contactez-moi !</p>
               <button class="btn btn-primary" value="Publicité" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=1" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -178,6 +175,7 @@
               <h3 class="card-title">Packshot</h3>
               <p class="card-text">Faire une boutique en ligne sans présenter correctement vos produits diminue vos chance de vendre...<br>Contactez-moi !</p>
               <button class="btn btn-primary" value="Packshot" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=3" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -187,6 +185,7 @@
               <h3 class="card-title">Portrait</h3>
               <p class="card-text">Photo en studio ou dehors.</p>
               <button class="btn btn-primary" value="Portrait" name="value">Contactez !</button>
+              <a href="portefolio.php?categorie=4" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
           </div>
 
@@ -198,7 +197,7 @@
 
   <!-- Contact section -->
   <div class="w3-container w3-dark-grey w3-text-light-grey w3-padding-32">
-    <div class="w3-content" style="max-width:600px">
+    <div class="w3-content tailleMaxDiv">
       <h2 class="w3-center"><b>Contactez moi !</b></h2>
       <p>Si vous avez des questions ou autres, merci de remplir ce formulaire. Vous serez recontacter par mail.</p>
       <?php if ($alert_contact == 0) {
@@ -222,7 +221,7 @@
           <textarea rows="5" cols="66" name="message" required></textarea>
         </div>
 
-        <div style="margin: 0 auto; width: 300px; ">
+        <div class="divCaptcha">
           <div class="g-recaptcha" data-sitekey="6LfMlcEUAAAAAFZktznFZmdCXgrZntEnsvZYL7Zi"></div>
         </div>
 
@@ -233,43 +232,11 @@
     </div>
   </div>
 
-  <div style="clear:both;"></div>   
+  <!-- FOOTER -->
+  <?php require_once("footer.php"); ?>
+  <!-- FOOTER -->
 
-  <?php 
-    // FOOTER //
-    require_once("footer.php"); 
-  ?>
+  <?php require_once("script.php"); ?>
 
 </body>
-
-<script>
-    function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
-    }
-        
-    function onClick(element) {
-    document.getElementById("img01").src = element.src;
-    document.getElementById("modal01").style.display = "block";
-    }
-
-    $(function() {
-        var selectedClass = "";
-        $(".fil-cat").click(function(){ 
-            selectedClass = $(this).attr("data-rel"); 
-            $("#portfolio").fadeTo(100, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut().removeClass('scale-anm');
-            setTimeout(function() {
-            $("."+selectedClass).fadeIn().addClass('scale-anm');
-            $("#portfolio").fadeTo(300, 1);
-            }, 300); 
-        });
-    });
-
-</script>
 </html>

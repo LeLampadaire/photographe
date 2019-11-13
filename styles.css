@@ -10,6 +10,36 @@ a:link{
     margin-bottom: 10px;
 }
 
+.divCaptcha{
+    margin: 0 auto; 
+    width: 300px;
+}
+
+.headerNav{
+    z-index:3;
+    width:250px;
+    font-weight:bold;
+    display:none;
+    right:0;
+}
+
+.text18rem{
+    width: 18rem;
+}
+
+/* Index */
+
+.espacePaddingGaucheDroite25px{
+    padding-bottom: 25px;
+    padding-top: 20px;
+}
+
+.espaceEntreCol{
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
 /* Portefolio */
 
 #portfolio {  
@@ -40,7 +70,20 @@ img.opacity:hover {
 	opacity: .5;
 }
 
-/*  INFORMATION */
+.fondModal{
+    padding-top:0; 
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.tailleBlocImage{
+    padding-top: 5vh;
+}
+
+.tailleImage{
+    height: 90vh;
+}
+
+/*  Information */
 
 .colorcard{
     background-color: azure;
@@ -50,7 +93,33 @@ img.opacity:hover {
     width: 35px;
 }
 
-/* FOOTER */
+.tailleMaxDiv{
+    max-width:600px;
+}
+
+/* Messages(Admin) + modif-portefolio */
+
+.tableBorderBlack{
+    border: 2px solid black;
+}
+
+/* Modif-portefolio */
+
+.margin2px{
+    margin: 2px;
+}
+
+.PaddingImgModif{
+    padding: 5px;
+}
+
+/* Modif-categorie */
+
+.paddingBottom20px{
+    padding-bottom: 20px;
+}
+
+/* Footer */
 
 #red{ 
     border-top: solid rgb(168, 70, 70);

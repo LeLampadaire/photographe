@@ -71,27 +71,20 @@
 <head>
     <title><?php echo $NomSite; ?> - Admin</title>
     <link rel="icon" href="<?= $favicon ?>" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" href="../styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <?php require_once("../link.php"); ?>
 </head>
 <body>
 
-    <?php 
-      // HEADER //
-      require_once("header-admin.php"); 
-    ?>
+    <!-- HEADER -->
+    <?php require_once("../header.php"); ?>
+    <!-- HEADER -->
 
     <div class="container text-center">
         <div class="row">
             <div class="col-sm border-right">
-                <h1 style="text-align: center;">Catégories</h1>
+                <h1 class="text-center">Catégories</h1>
                 <form action="" method="POST" enctype="multipart/form-data">
-                    <h3 style="text-align: center;">Ajout</h3>
+                    <h3 class="text-center">Ajout</h3>
                     <?php if ($error == 1) {
                         echo '<div class="alert alert-danger" role="alert">Erreur !</div>';
                     } ?>
@@ -115,9 +108,9 @@
             </div>
 
             <div class="col-sm">
-                <h1 style="text-align: center;">Photo</h1>
+                <h1 class="text-center">Photo</h1>
                 <form action="" method="POST" enctype="multipart/form-data">
-                    <h3 style="text-align: center;">Ajout</h3>
+                    <h3 class="text-center">Ajout</h3>
                     <?php if ($errorportefolio == 1) {
                             echo '<div class="alert alert-danger" role="alert">Erreur !</div>';
                     } ?>
@@ -145,7 +138,7 @@
         <div class="row">
             <div class="col-sm border-right border-top">
                 <form action="" method="POST">
-                    <h3 style="text-align: center;">Suppression</h3>
+                    <h3 class="text-center">Suppression</h3>
                     <?php if ($errorsuppressioncategorie == 1) {
                             echo '<div class="alert alert-danger" role="alert">Erreur !</div>';
                     } ?>
@@ -192,7 +185,7 @@
             
             <div class="col-sm border-top">
                 <form action="" method="POST">
-                    <h3 style="text-align: center;">Suppression</h3>
+                    <h3 class="text-center">Suppression</h3>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
@@ -215,14 +208,14 @@
         
         <div class="row">
             <div class="col-sm-6 border-right border-top">
-                <h3 style="text-align: center;">Modification</h3>
+                <h3 class="text-center">Modification</h3>
                 <a href="modif-categorie.php"><button type="button" class="btn btn-primary">S'y rendre !</button></a>
             </div>
         </div>
     </div>
 
     <br>
-    <div style="text-align: center;">
+    <div class="text-center">
         <a href="services.php" alt="Services"><button type="button" class="btn btn-secondary">Services <span class="badge <?php if($nbr_services['nbr'] == 0){ echo "badge-light"; }else{ echo "badge-danger"; } ?>"><?php echo $nbr_services['nbr'] ?></span></button></a>
         <a href="messages.php" alt="Messages"><button type="button" class="btn btn-primary">Messages <span class="badge <?php if($nbr_messages['nbr'] == 0){ echo "badge-light"; }else{ echo "badge-danger"; } ?>"><?php echo $nbr_messages['nbr'] ?></span></button></a>
         <a href="deconnexion.php" alt="Déconnexion"><button type="button" class="btn btn-warning">Déconnexion</button></a>
@@ -231,43 +224,9 @@
     <br>
     
     <!-- FOOTER -->
-    <?php require_once("footer-admin.php"); ?>
+    <?php require_once("../footer.php"); ?>
     <!-- FOOTER -->
 
+    <?php require_once("../script.php"); ?>
 </body>
-
-<script>
-
-    $('#exampleModal').modal('show');
-
-
-    function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("myOverlay").style.display = "none";
-    }
-        
-    function onClick(element) {
-        document.getElementById("img01").src = element.src;
-        document.getElementById("modal01").style.display = "block";
-    }
-
-    $(function() {
-        var selectedClass = "";
-        $(".fil-cat").click(function(){ 
-            selectedClass = $(this).attr("data-rel"); 
-            $("#portfolio").fadeTo(100, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut().removeClass('scale-anm');
-            setTimeout(function() {
-            $("."+selectedClass).fadeIn().addClass('scale-anm');
-            $("#portfolio").fadeTo(300, 1);
-            }, 300); 
-        });
-    });
-
-</script>
 </html>

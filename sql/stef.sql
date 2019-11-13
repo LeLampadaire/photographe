@@ -40,11 +40,11 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `nom`, `image`, `description`) VALUES
-(1, 'PublicitÃ©', 'images/categorie/PublicitÃ©.jpg', 'Photographie de produit pour publicitÃ©.'),
-(2, 'Photographie de produits en studio', 'images/categorie/Photographie de produits en studio.jpg', 'Produits photographiÃ©s en studio.'),
-(3, 'Packshot', 'images/categorie/Packshot.gif', 'Photographie servant Ã  prÃ©senter un produit pour gÃ©nÃ©ralement publier sur une boutique en ligne.'),
+(1, 'Publicité', 'images/categorie/Publicité.jpg', 'Photographie de produit pour publicité.'),
+(2, 'Photographie de produits en studio', 'images/categorie/Photographie de produits en studio.jpg', 'Produits photographiés en studio.'),
+(3, 'Packshot', 'images/categorie/Packshot.gif', 'Photographie servant à  présenter un produit pour généralement publier sur une boutique en ligne.\r\n'),
 (4, 'Portrait', 'images/categorie/Portrait.jpg', 'Photo en studio ou dehors.'),
-(5, 'Ã‰vÃ©nementiel', 'images/categorie/Ã‰vÃ©nementiel.jpg', 'Photographie d\'Ã©vÃ©nements.');
+(5, 'Événementiel', 'images/categorie/Événementiel.jpg', 'Photographie d’événements.');
 
 -- --------------------------------------------------------
 
@@ -56,7 +56,7 @@ CREATE TABLE `compte` (
   `id` int(11) NOT NULL,
   `pseudo` varchar(255) NOT NULL,
   `mdp` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `compte`
@@ -77,7 +77,7 @@ CREATE TABLE `contact` (
   `mail` varchar(200) NOT NULL,
   `message` text NOT NULL,
   `vu` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `contact`
@@ -100,17 +100,15 @@ CREATE TABLE `portefolio` (
 --
 
 INSERT INTO `portefolio` (`id`, `categorie`, `lien`) VALUES
-(8, 2, 'images/portefolio/Photographie de produits en studio-Visseuse chocolat signÃ©.jpg'),
-(15, 2, 'images/portefolio/Photographie de produits en studio-Visseuse chocolat signÃ© 150.jpg'),
 (16, 2, 'images/portefolio/Photographie de produits en studio-WEB.jpg'),
-(17, 1, 'images/portefolio/PublicitÃ©-WEB-CRODINO.jpg'),
-(18, 1, 'images/portefolio/PublicitÃ©-PUB-BLACK-OPIUM2-WEB.jpg'),
-(19, 1, 'images/portefolio/PublicitÃ©-Yves rocher Rose fraiche.jpg'),
-(20, 1, 'images/portefolio/PublicitÃ©-Huile-d\'olive-pub-WEB.jpg'),
-(21, 1, 'images/portefolio/PublicitÃ©-esprit-montre-WEB.jpg'),
-(22, 1, 'images/portefolio/PublicitÃ©-Martini-WEB.jpg'),
+(17, 1, 'images/portefolio/Publicité-WEB-CRODINO.jpg'),
+(18, 1, 'images/portefolio/Publicité-PUB-BLACK-OPIUM2-WEB.jpg'),
+(19, 1, 'images/portefolio/Publicité-Yves rocher Rose fraiche.jpg'),
+(20, 1, 'images/portefolio/Publicité-Huile-d\'olive-pub-WEB.jpg'),
+(21, 1, 'images/portefolio/Publicité-esprit-montre-WEB.jpg'),
+(22, 1, 'images/portefolio/Publicité-Martini-WEB.jpg'),
 (25, 4, 'images/portefolio/Portrait-Audrey-couleur.jpg'),
-(29, 3, 'images/portefolio/Packshot-Pull-dÃ©tourÃ©-FIN-11-11-1954.gif');
+(29, 3, 'images/portefolio/Packshot-Pull-détouré-FIN-11-11-1954.gif');
 
 -- --------------------------------------------------------
 
@@ -126,7 +124,7 @@ CREATE TABLE `services` (
   `mail` varchar(250) NOT NULL,
   `telephone` varchar(50) DEFAULT NULL,
   `vu` tinyint(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Index pour les tables déchargées

@@ -34,30 +34,23 @@
 <head>
     <title><?php echo $NomSite; ?> - Modification</title>
     <link rel="icon" href="<?= $favicon ?>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" type="text/css" media="screen" href="../styles.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <?php require_once("../link.php"); ?>
 </head>
 <body>
 
     <!-- HEADER -->
-    <?php require('header-admin.php'); ?>
+    <?php require_once("../header.php"); ?>
     <!-- HEADER -->
 
     <div class="container">
         <br>
-        <a href="index.php"><button type="button" class="btn btn-info">Retour</button></a>
+        <a href="javascript:history.back()"><button type="button" class="btn btn-info">Retour</button></a>
         <br><br>
         <div class="row">
 
                 <?php foreach($categories as $donnees){?>
-                    <div class="col-sm-4" style="padding-bottom: 20px;">
-                        <div class="card" style="width: 18rem;">
+                    <div class="col-sm-4 paddingBottom20px">
+                        <div class="card text18rem">
                             <img src="<?php echo '../'.$donnees['image']; ?>" class="card-img-top" alt="<?php echo $donnees['nom']; ?>">
                             <div class="card-body">
                                 <h3 class="card-title"><?php echo $donnees['nom']; ?></h3>
@@ -107,43 +100,15 @@
         </div>
         <br>
         
-        <a href="index.php"><button type="button" class="btn btn-info">Retour</button></a>
+        <a href="javascript:history.back()"><button type="button" class="btn btn-info">Retour</button></a>
         <br><br>
     </div>
+    
+    <!-- FOOTER -->
+    <?php require_once("../footer.php"); ?>
+    <!-- FOOTER -->
 
-    <!-- FOOTER -->
-    <?php require_once("footer-admin.php"); ?>
-    <!-- FOOTER -->
+    <?php require_once("../script.php"); ?>
+    
 </body>
-
-<script>
-    function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-        document.getElementById("mySidebar").style.display = "none";
-        document.getElementById("myOverlay").style.display = "none";
-    }
-        
-    function onClick(element) {
-        document.getElementById("img01").src = element.src;
-        document.getElementById("modal01").style.display = "block";
-    }
-
-    $(function() {
-        var selectedClass = "";
-        $(".fil-cat").click(function(){ 
-            selectedClass = $(this).attr("data-rel"); 
-            $("#portfolio").fadeTo(100, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut().removeClass('scale-anm');
-            setTimeout(function() {
-            $("."+selectedClass).fadeIn().addClass('scale-anm');
-            $("#portfolio").fadeTo(300, 1);
-            }, 300); 
-        });
-    });
-
-</script>
 </html>

@@ -10,7 +10,7 @@
 	$error = 0;
 	if(!empty($_POST)){
 		$mdp = md5($_POST['mdp']);
-		$pseudo = utf8_decode($_POST['pseudo']);
+		$pseudo = $_POST['pseudo'];
 		$ret = mysqli_query($bdd, 'SELECT * FROM compte WHERE pseudo LIKE("'.$pseudo.'") AND mdp LIKE("'.$mdp.'");');
 		$ret = mysqli_fetch_array($ret, MYSQLI_ASSOC);
 
@@ -18,7 +18,7 @@
 			$error = 1;
 		}else{
 			session_unset();
-			$_SESSION['pseudo'] = utf8_encode($ret['pseudo']);
+			$_SESSION['pseudo'] = $ret['pseudo'];
 			header('Location: index.php');
 		}
 	}
@@ -30,71 +30,40 @@
 <head>
     <title><?php echo $NomSite; ?> - Connexion</title>
     <link rel="icon" href="<?= $favicon ?>" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-    <link rel="stylesheet" type="text/css" media="screen" href="../styles.css" />
+    <?php require_once("../link.php"); ?>
 </head>
 <body>
 
     <!-- HEADER -->
-    <?php require('../header.php'); ?>
+    <?php require_once("../header.php"); ?>
     <!-- HEADER -->
 
-    <h1 style="text-align: center;">Connexion</h1>
+    <h1 class="text-center">Connexion</h1>
 
-		<section class="text-center text-white">
-			
-			<div class="box text-center">
-			
-					<form method="POST">
-						<?php
-							if ($error == 1) {
-								echo '<div class="alert alert-danger" role="alert">Pseudo ou mot de passe incorrect.</div>';
-							}	
-						?>
-						<label>Nom de compte<br><input required type="text" name="pseudo" placeholder="Pseudo"><br></label>
-						<label>Mot de passe<br><input required type="password" name="mdp" placeholder="Mot de passe"><br></label>
+	<section class="text-center text-white">
+		
+		<div class="box text-center">
+		
+				<form method="POST">
+					<?php
+						if ($error == 1) {
+							echo '<div class="alert alert-danger" role="alert">Pseudo ou mot de passe incorrect.</div>';
+						}	
+					?>
+					<label>Nom de compte<br><input required type="text" name="pseudo" placeholder="Pseudo"><br></label>
+					<label>Mot de passe<br><input required type="password" name="mdp" placeholder="Mot de passe"><br></label>
 
-						<button type="submit" class="btn btn-outline-dark">Se connecter</button>
-					</form>
-					<br>
-			</div>
-		</section>
+					<button type="submit" class="btn btn-outline-dark">Se connecter</button>
+				</form>
+				<br>
+		</div>
+	</section>
 
     <!-- FOOTER -->
-    <?php require_once("footer-admin.php"); ?>
+    <?php require_once("../footer.php"); ?>
     <!-- FOOTER -->
+
+    <?php require_once("../script.php"); ?>
+
 </body>
-
-<script>
-    function w3_open() {
-    document.getElementById("mySidebar").style.display = "block";
-    document.getElementById("myOverlay").style.display = "block";
-    }
-
-    function w3_close() {
-    document.getElementById("mySidebar").style.display = "none";
-    document.getElementById("myOverlay").style.display = "none";
-    }
-        
-    function onClick(element) {
-    document.getElementById("img01").src = element.src;
-    document.getElementById("modal01").style.display = "block";
-    }
-
-    $(function() {
-        var selectedClass = "";
-        $(".fil-cat").click(function(){ 
-            selectedClass = $(this).attr("data-rel"); 
-            $("#portfolio").fadeTo(100, 0.1);
-            $("#portfolio div").not("."+selectedClass).fadeOut().removeClass('scale-anm');
-            setTimeout(function() {
-            $("."+selectedClass).fadeIn().addClass('scale-anm');
-            $("#portfolio").fadeTo(300, 1);
-            }, 300); 
-        });
-    });
-
-</script>
 </html>
