@@ -19,6 +19,7 @@ Site Web pour le photographe Stéphane !
 ## Admin
 - Catégories
   - Ajout
+  - Ajout GIF
   - Suppression
   - Modification
 - Photo
@@ -35,6 +36,7 @@ Site Web pour le photographe Stéphane !
 
 ## Screen
 - Index
-![Photo - Index](https://user-images.githubusercontent.com/41271314/67465742-0b587180-f646-11e9-8bf8-4a8b0357f830.PNG)
+![Photo - Index](https://user-images.githubusercontent.com/41271314/69365360-783a4800-0c94-11ea-8f70-186a40d9968a.PNG)
+
 - Admin
-![Panel - Admin](https://user-images.githubusercontent.com/41271314/68693748-1bde7680-0578-11ea-83de-73c53f4e0faa.PNG)
+![Photo - Admin](https://user-images.githubusercontent.com/41271314/69365368-7a9ca200-0c94-11ea-9931-e5947a19c30a.PNG)
