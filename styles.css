@@ -83,6 +83,60 @@ img.opacity:hover {
     height: 90vh;
 }
 
+.borderNone{
+    border: none;
+}
+
+.countCollummss{
+    column-count: 6;
+}
+
+/* -> Cursor */
+
+.slider {
+    -webkit-appearance: none;
+    width: 220px;
+    height: 15px;
+    background: #d3d3d3;
+    border-radius: 30px;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.milieu{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 33px;
+    height: 34px;
+    border: 0;
+    background: url('images/cursor.png');
+    background-size: 33px 32px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 33px;
+    height: 34px;
+    border: 0;
+    background: url('images/cursor.png');
+    background-size: 33px 32px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
 /*  Information */
 
 .colorcard{
@@ -95,6 +149,10 @@ img.opacity:hover {
 
 .tailleMaxDiv{
     max-width:600px;
+}
+
+.hidden{
+    display: none;
 }
 
 /* Messages(Admin) + modif-portefolio */

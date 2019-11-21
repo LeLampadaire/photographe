@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le :  mar. 12 nov. 2019 à 17:47
+-- Généré le :  jeu. 21 nov. 2019 à 16:58
 -- Version du serveur :  10.1.41-MariaDB-1~jessie
 -- Version de PHP :  5.6.40-0+deb8u6
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `rausi1259077`
+-- Base de données :  `stef`
 --
 
 -- --------------------------------------------------------
@@ -44,7 +44,8 @@ INSERT INTO `categories` (`id`, `nom`, `image`, `description`) VALUES
 (2, 'Photographie de produits en studio', 'images/categorie/Photographie de produits en studio.jpg', 'Produits photographiés en studio.'),
 (3, 'Packshot', 'images/categorie/Packshot.gif', 'Photographie servant à  présenter un produit pour généralement publier sur une boutique en ligne.\r\n'),
 (4, 'Portrait', 'images/categorie/Portrait.jpg', 'Photo en studio ou dehors.'),
-(5, 'Événementiel', 'images/categorie/Événementiel.jpg', 'Photographie d’événements.');
+(5, 'Événementiel', 'images/categorie/Événementiel.jpg', 'Photographie d’événements.'),
+(6, 'Restaurations de photographies anciennes', 'images/categorie/Restaurations de photographies anciennes.jpg', 'Vous voulez faire revivre vos anciennes photos ou les photos que vous avez tant aimées ? Une restauration complète s\'impose !');
 
 -- --------------------------------------------------------
 
@@ -79,9 +80,17 @@ CREATE TABLE `contact` (
   `vu` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
 --
--- Déchargement des données de la table `contact`
+-- Structure de la table `gif`
 --
+
+CREATE TABLE `gif` (
+  `id` int(11) NOT NULL,
+  `id_portefolio` int(11) NOT NULL,
+  `lien` varchar(255) CHARACTER SET latin1 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -92,23 +101,32 @@ CREATE TABLE `contact` (
 CREATE TABLE `portefolio` (
   `id` int(11) NOT NULL,
   `categorie` int(50) NOT NULL,
-  `lien` varchar(255) NOT NULL
+  `lien` varchar(255) NOT NULL,
+  `gif` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `portefolio`
 --
 
-INSERT INTO `portefolio` (`id`, `categorie`, `lien`) VALUES
-(16, 2, 'images/portefolio/Photographie de produits en studio-WEB.jpg'),
-(17, 1, 'images/portefolio/Publicité-WEB-CRODINO.jpg'),
-(18, 1, 'images/portefolio/Publicité-PUB-BLACK-OPIUM2-WEB.jpg'),
-(19, 1, 'images/portefolio/Publicité-Yves rocher Rose fraiche.jpg'),
-(20, 1, 'images/portefolio/Publicité-Huile-d\'olive-pub-WEB.jpg'),
-(21, 1, 'images/portefolio/Publicité-esprit-montre-WEB.jpg'),
-(22, 1, 'images/portefolio/Publicité-Martini-WEB.jpg'),
-(25, 4, 'images/portefolio/Portrait-Audrey-couleur.jpg'),
-(29, 3, 'images/portefolio/Packshot-Pull-détouré-FIN-11-11-1954.gif');
+INSERT INTO `portefolio` (`id`, `categorie`, `lien`, `gif`) VALUES
+(16, 2, 'images/portefolio/Photographie de produits en studio-WEB.jpg', 0),
+(17, 1, 'images/portefolio/Publicité-WEB-CRODINO.jpg', 0),
+(18, 1, 'images/portefolio/Publicité-PUB-BLACK-OPIUM2-WEB.jpg', 0),
+(19, 1, 'images/portefolio/Publicité-Yves rocher Rose fraiche.jpg', 0),
+(20, 1, 'images/portefolio/Publicité-Huile-d\'olive-pub-WEB.jpg', 0),
+(21, 1, 'images/portefolio/Publicité-esprit-montre-WEB.jpg', 0),
+(22, 1, 'images/portefolio/Publicité-Martini-WEB.jpg', 0),
+(25, 4, 'images/portefolio/Portrait-Audrey-couleur.jpg', 0),
+(29, 3, 'images/portefolio/Packshot-Pull-détouré-FIN-11-11-1954.gif', 0),
+(30, 5, 'images/portefolio/Événementiel-WEB.jpg', 0),
+(31, 5, 'images/portefolio/Événementiel-WEB2.jpg', 0),
+(32, 5, 'images/portefolio/Événementiel-WEB3.jpg', 0),
+(33, 4, 'images/portefolio/Portrait-WEB-1.jpg', 0),
+(34, 4, 'images/portefolio/Portrait-WEB-2.jpg', 0),
+(35, 1, 'images/portefolio/Publicité-web chauffage.jpg', 0),
+(36, 6, 'images/portefolio/Restaurations de photographies anciennes-Mise en page avant après.jpg', 0),
+(37, 5, 'images/portefolio/Événementiel-WEB-Mariage.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -149,6 +167,13 @@ ALTER TABLE `contact`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `gif`
+--
+ALTER TABLE `gif`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_portefolio_gif` (`id_portefolio`);
+
+--
 -- Index pour la table `portefolio`
 --
 ALTER TABLE `portefolio`
@@ -169,25 +194,31 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT pour la table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT pour la table `compte`
 --
 ALTER TABLE `compte`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `gif`
+--
+ALTER TABLE `gif`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `portefolio`
 --
 ALTER TABLE `portefolio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT pour la table `services`
@@ -198,6 +229,12 @@ ALTER TABLE `services`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `gif`
+--
+ALTER TABLE `gif`
+  ADD CONSTRAINT `id_portefolio_gif` FOREIGN KEY (`id_portefolio`) REFERENCES `portefolio` (`id`);
 
 --
 -- Contraintes pour la table `portefolio`

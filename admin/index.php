@@ -15,7 +15,6 @@
 
     $error = 0;
     $errorportefolio = 0;
-    $errorsuppressioncategorie = 0;
 
     if(isset($_POST['nom']) && isset($_POST['description'])){
         if(isset($_FILES['photo']) && $_FILES['photo']['error'] == 0 ){
@@ -35,13 +34,44 @@
     }
 
     if(isset($_POST['suppression-categorie'])){
-        mysqli_query($bdd,'DELETE FROM portefolio WHERE categorie='.$_POST['suppression-categorie'].';');
-        $test = mysqli_query($bdd,'DELETE FROM categories WHERE id='.$_POST['suppression-categorie'].';');
-        if(!$test){
-            $errorsuppressioncategorie = 1;
-        }else{
-            header('Location: index.php');
+        // 1. Vérifie si il y a des images GIF
+        $verif = mysqli_query($bdd, 'SELECT IF(gif != 0, "TRUE", "FALSE") as test FROM portefolio WHERE categorie='.$_POST['suppression-categorie'].' GROUP BY test ORDER BY test DESC;');
+        $verif = mysqli_fetch_array($verif, MYSQLI_ASSOC);
+
+        if($verif['test'] == "TRUE"){
+            // 2. Supprimez les images dans le FTP 
+            $suppr = mysqli_query($bdd, 'SELECT gif.lien FROM gif INNER JOIN portefolio ON(gif.id_portefolio = portefolio.id) WHERE portefolio.categorie ='.$_POST['suppression-categorie'].';');
+            foreach($suppr as $donnees){
+                $suppression = "../".$donnees['lien'];
+                unlink($suppression);
+            }
+
+            // 3. Supprimez les images dans la BDD
+            $idRecup = mysqli_query($bdd, 'SELECT id FROM portefolio WHERE categorie = '.$_POST['suppression-categorie'].' AND gif != 0;');
+            $idRecup = mysqli_fetch_array($idRecup, MYSQLI_ASSOC);
+            mysqli_query($bdd, 'DELETE FROM gif WHERE id_portefolio='.$idRecup['id'].';');
         }
+
+        // 4. Suppression des images du portefolio dans le FTP
+        $lienPortefolio = mysqli_query($bdd, 'SELECT lien FROM portefolio WHERE categorie='.$_POST['suppression-categorie'].';');
+        foreach($lienPortefolio as $lienPortefolioFor){ // Provoque un Warning parce qu'une image de la BDD gif à le même nom que l'image dans le portefolio 
+            $suppression = "../".$lienPortefolioFor['lien'];
+            unlink($suppression);
+        }
+        
+        // 5. Suppression des images dans la BDD
+        mysqli_query($bdd,'DELETE FROM portefolio WHERE categorie='.$_POST['suppression-categorie'].';');
+
+        // 6. Suppression de l'image de la catégorie dans le FTP
+        $lienCategorie = mysqli_query($bdd, 'SELECT image FROM categories WHERE id='.$_POST['suppression-categorie'].';');
+        $lienCategorie = mysqli_fetch_array($lienCategorie, MYSQLI_ASSOC);
+        $lienCategorie =  "../".$lienCategorie['image'];
+        unlink($lienCategorie);
+
+        // 7. Suppression de la catégorie dans la BDD
+        mysqli_query($bdd,'DELETE FROM categories WHERE id='.$_POST['suppression-categorie'].';');
+
+        header('Location: index.php');
     }
     
     if(isset($_POST['categorie'])){
@@ -64,14 +94,20 @@
     }
 
     if(isset($_POST['suppressionInCategorie'])){
-        header('Location: modif-portefolio.php?categorie='.$_POST['suppressionInCategorie'].'');
+        header('Location: suppr-portefolio.php?categorie='.$_POST['suppressionInCategorie'].'');
     }
+
+    $listeCategorie = mysqli_query($bdd, 'SELECT id, nom FROM categories;');
+
 ?>
 <html>
 <head>
     <title><?php echo $NomSite; ?> - Admin</title>
     <link rel="icon" href="<?= $favicon ?>" />
     <?php require_once("../link.php"); ?>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 </head>
 <body>
 
@@ -105,6 +141,7 @@
                     <input id="photo" name="photo" type="file"><br><br>
                     <button type="submit" class="btn btn-primary">Créez !</button>
                 </form>
+                    
             </div>
 
             <div class="col-sm">
@@ -118,12 +155,9 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
                         </div>
-                        <?php
-                            $req = mysqli_query($bdd, 'SELECT id, nom FROM categories;');
-                        ?>
                         <select class="custom-select" id="inputGroupSelect01" name="categorie">
                             <option value="0" selected disabled>Choisir ...</option>
-                            <?php foreach($req as $donnees){
+                            <?php foreach($listeCategorie as $donnees){
                                 echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
                             } ?>
                         </select>
@@ -139,32 +173,26 @@
             <div class="col-sm border-right border-top">
                 <form action="" method="POST">
                     <h3 class="text-center">Suppression</h3>
-                    <?php if ($errorsuppressioncategorie == 1) {
-                            echo '<div class="alert alert-danger" role="alert">Erreur !</div>';
-                    } ?>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
                         </div>
-                        <?php
-                            $req = mysqli_query($bdd, 'SELECT id, nom FROM categories;');
-                        ?>
                         <select class="custom-select" id="inputGroupSelect01" name="suppression-categorie">
                             <option value="0" selected disabled>Choisir ...</option>
-                            <?php foreach($req as $donnees){
+                            <?php foreach($listeCategorie as $donnees){
                                 echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
                             } ?>
                         </select>
                     </div>
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Supprimez !</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalSuppression">Supprimez !</button>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <!-- Modal Suppression -->
+                    <div class="modal fade" id="ModalSuppression" tabindex="-1" role="dialog" aria-labelledby="ModalSuppressionCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">Êtes-vous sur de supprimez la catégorie ?</h5>
+                                <h5 class="modal-title" id="ModalSuppressionCenterTitle">Êtes-vous sur de supprimez la catégorie ?</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
@@ -184,25 +212,47 @@
             </div>
             
             <div class="col-sm border-top">
-                <form action="" method="POST">
-                    <h3 class="text-center">Suppression</h3>
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
-                        </div>
-                        <?php
-                            $req = mysqli_query($bdd, 'SELECT id, nom FROM categories;');
-                        ?>
-                        <select class="custom-select" id="inputGroupSelect01" name="suppressionInCategorie">
-                            <option value="0" selected disabled>Choisir ...</option>
-                            <?php foreach($req as $donnees){
-                                echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
-                            } ?>
-                        </select>
-                    </div>
+                <h3 class="text-center">Ajout d'un GIF</h3>
+                <form action="ajout-gif.php" method="POST">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalAjoutGif">Ajoutez un GIF !</button>
 
-                    <button type="submit" class="btn btn-primary" >S'y rendre !</button>                
-                </form>    
+                    <!-- Modal Ajout Gif -->
+                    <div class="modal fade" id="ModalAjoutGif" tabindex="-1" role="dialog" aria-labelledby="ModalAjoutGifCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="ModalAjoutGifCenterTitle">Ajoutez un gif</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
+                                    </div>
+                                    <select class="custom-select" id="inputGroupSelect01" name="categorie">
+                                        <option value="0" selected disabled>Choisir ...</option>
+                                        <?php foreach($listeCategorie as $donnees){
+                                            echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
+                                        } ?>
+                                    </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="inputGroupSelect01">Nombre d'image</label>
+                                    </div>
+                                    <input type="number" class="form-control" name="nbrImage" placeholder="nbrImage" aria-label="nbrImage" aria-describedby="basic-addon1">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulez</button>
+                                <button type="submit" class="btn btn-success">Ok !</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         
@@ -210,6 +260,25 @@
             <div class="col-sm-6 border-right border-top">
                 <h3 class="text-center">Modification</h3>
                 <a href="modif-categorie.php"><button type="button" class="btn btn-primary">S'y rendre !</button></a>
+            </div>
+
+            <div class="col-sm border-top">
+                <form action="" method="POST">
+                    <h3 class="text-center">Suppression</h3>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Catégorie</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01" name="suppressionInCategorie">
+                            <option value="0" selected disabled>Choisir ...</option>
+                            <?php foreach($listeCategorie as $donnees){
+                                echo '<option value="'.$donnees['id'].'">'.$donnees['nom'].'</option>';
+                            } ?>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" >S'y rendre !</button>                
+                </form>    
             </div>
         </div>
     </div>
@@ -227,6 +296,6 @@
     <?php require_once("../footer.php"); ?>
     <!-- FOOTER -->
 
-    <?php require_once("../script.php"); ?>
+    <script src="/script.js"></script>
 </body>
 </html>

@@ -105,7 +105,6 @@
     <?php require_once("footer.php"); ?>
     <!-- FOOTER -->
 
-    <?php require_once("script.php"); ?>
-
+    <script src="script.js"></script>
 </body>
 </html>

@@ -8,25 +8,6 @@
     $alert_contact = -1;
     $alert_valid = -1;
   }
-
-  if(isset($_POST['valid'])){
-    // Ma clé privée
-    $secret = "6LfMlcEUAAAAAIfhAxPgjyfPOcmMbJ-TWL5VtgSY";
-    // Paramètre renvoyé par le recaptcha
-    $response = $_POST['g-recaptcha-response'];
-    // On récupère l'IP de l'utilisateur
-    $remoteip = $_SERVER['REMOTE_ADDR'];
-    
-    $api_url = "https://www.google.com/recaptcha/api/siteverify?secret=".$secret."&response=".$response."&remoteip=".$remoteip;
-    
-    $decode = json_decode(file_get_contents($api_url), true);
-    
-    if($decode['success'] == true){
-      $alert_valid = 1;
-    }else{
-      $alert_valid = 0;
-    }
-  }
   
   if(isset($_POST['prenom'])){
     // Ma clé privée
@@ -90,32 +71,22 @@
       <hr class="w3-opacity">
       <p>Stéphane Rausin <?php echo age("13-12-2000"); ?> ans, </p>
 
-      <p>Photographe passionné par la publicité et les photographie en studio.</p>
+      <p>Photographe passionné par la publicité et les photographies en studio.</p>
 
       <br><p>Mon site est là pour partager mes créations et proposer mes services photographiques.</p>
 
       <hr class="w3-opacity">
       <h2>Données</h2>
 
-      <?php if($alert_valid != 1){ ?>
-        <form action="" method="POST">
-          <input type="hidden" value="1" name="valid"> 
-          <div class="divCaptcha">
-            <div class="g-recaptcha" data-sitekey="6LfMlcEUAAAAAFZktznFZmdCXgrZntEnsvZYL7Zi"></div>
-          </div>
+      <div id="captcha" class="divCaptcha">
+        <div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="6LfMlcEUAAAAAFZktznFZmdCXgrZntEnsvZYL7Zi"></div>
+      </div>
 
-          <br>
-
-          <button type="submit" class="w3-button w3-block w3-black w3-margin-bottom">Voir !</button>
-        </form>
-      <?php } ?>
-
-      <?php if($alert_valid == 1){ ?>
+      <div id="donnees" class="hidden">
         <p><img src="images/mail.png" class="icon-information" alt="Localisation">  Mail : <a href="mailto:stephane.rausin@gmail.com">stephane.rausin@gmail.com</a></p>
         <p><img src="images/telephone.png" class="icon-information" alt="Localisation">  Téléphone : <a href="tel:+32495516959">+32495516959</a></p>
         <p><img src="images/map.png" class="icon-information" alt="Localisation">  Situé en Belgique - Province de liège !</p>
-      <?php } ?>
-
+      </div>
       <hr>
     </div>
     <span id="services"></span> <!-- Parce que l'ancre ne fonctionne pas bien du coup je le mets un peu plus haut -->
@@ -183,7 +154,7 @@
             <img src="images/services/portrait.jpg" class="card-img-top" alt="Image">
             <div class="card-body">
               <h3 class="card-title">Portrait</h3>
-              <p class="card-text">Photo en studio ou dehors.</p>
+              <p class="card-text">Photo en studio ou extérieur.</p>
               <button class="btn btn-primary" value="Portrait" name="value">Contactez !</button>
               <a href="portefolio.php?categorie=4" alt="Lien"><div class="btn btn-warning">Voir !</div></a>
             </div>
@@ -199,7 +170,7 @@
   <div class="w3-container w3-dark-grey w3-text-light-grey w3-padding-32">
     <div class="w3-content tailleMaxDiv">
       <h2 class="w3-center"><b>Contactez moi !</b></h2>
-      <p>Si vous avez des questions ou autres, merci de remplir ce formulaire. Vous serez recontacter par mail.</p>
+      <p>Si vous avez des questions ou demandes, merci de remplir ce formulaire. Vous serez recontacté par mail.</p>
       <?php if ($alert_contact == 0) {
           echo '<div class="alert alert-danger" role="alert">Veuillez cocher la case du captcha !</div>';
         }else if($alert_contact == 1){
@@ -218,7 +189,7 @@
 
         <div class="w3-section">
           <label>Message</label><br>
-          <textarea rows="5" cols="66" name="message" required></textarea>
+          <textarea rows="5" cols="37" name="message" required></textarea>
         </div>
 
         <div class="divCaptcha">
@@ -236,7 +207,16 @@
   <?php require_once("footer.php"); ?>
   <!-- FOOTER -->
 
-  <?php require_once("script.php"); ?>
+  <script src="script.js"></script>
+  <script>
+    function recaptchaCallback() {
+        var hiddenDonnee = document.getElementById("donnees");
+        hiddenDonnee.classList.remove("hidden");
+
+        var hiddenCaptcha = document.getElementById("captcha");
+        hiddenCaptcha.classList.add("hidden");
+      };
+  </script>
 
 </body>
 </html>

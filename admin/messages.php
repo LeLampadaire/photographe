@@ -62,7 +62,7 @@
                         echo '<tr>';
                             echo '<td>'.$donnees['prenom'].'</td>';
                             echo '<td>'.$donnees['mail'].'</td>';
-                            echo '<td>'.$donnees['message'].'</td>';
+                            echo '<td width="500px">'.$donnees['message'].'</td>';
                         ?>
                         <form action="" method="POST">
                             <input type="hidden" value="<?php echo $donnees['id']; ?>" name="id">
@@ -92,7 +92,7 @@
     <?php require_once("../footer.php"); ?>
     <!-- FOOTER -->
 
-    <?php require_once("../script.php"); ?>
+    <script src="/script.js"></script>
 
 </body>
 </html>
