@@ -6,7 +6,6 @@
     $alert_contact = $_GET['error'];
   }else{
     $alert_contact = -1;
-    $alert_valid = -1;
   }
   
   if(isset($_POST['prenom'])){
